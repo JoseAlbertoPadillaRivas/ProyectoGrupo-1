@@ -7,35 +7,33 @@
     <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
         <div class="d-flex align-items-center justify-content-center w-100">
             <div class="row justify-content-center w-100">
-                <div class="col-md-6 col-lg-6 col-xxl-3">
-                    <div class="card mb-0">
-                        <div class="card-body">
-                            <div class="heading_container text-center">
-                                <h2 class="mb-3">
-                                    Iniciar Sesión
-                                </h2>
+                <div class="col-md-6 col-lg-5 col-xxl-4">
+                    <div class="card border-0 shadow-lg" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-4">
+                                <h2 class="mb-3 text-dark fw-bold">Iniciar Sesión</h2>
                             </div>
-                            <form action="">                                
-                                <div class="mb-3">
-                                    <label for="Correo" class="form-label">Correo Electrónico</label>
-                                    <input type="email" class="form-control" id="inputEmail" placeholder="Ingresar su correo">
+                            <form action="">
+                                <div class="form-group mb-3">
+                                    <label for="Correo" class="form-label text-dark">Correo Electrónico</label>
+                                    <input type="email" class="form-control shadow-sm p-3" id="inputEmail" placeholder="Ingresar su correo" style="border-radius: 10px;">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="Password" class="form-label">Contraseña</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Ingrese su Contraseña">
-                                </div>                                
-                                
-                                <div class="d-flex align-items-center justify-content-between mb-4">
-                                    <a href="@Url.Action("Index","Home")"  class="btn btn-primary py-8 fs-4 mb-4">Iniciar Sesión</a>
-                                </div>  
-                                <div class="d-flex align-items-center justify-content-between mb-4">
-                                <a class="text-white btn btn-primary fw-bold" href="@Url.Action("RecuperarAcceso","Login")">Recuperar Acceso</a>
+                                <div class="form-group mb-3">
+                                    <label for="Password" class="form-label text-dark">Contraseña</label>
+                                    <input type="password" class="form-control shadow-sm p-3" id="password" placeholder="Ingrese su Contraseña" style="border-radius: 10px;">
                                 </div>
 
-                                <p class="fs-4 mb-2 fw-bold">¿No tienes una cuenta?</p>
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <a href="@Url.Action("RecuperarAcceso","Login")" class="text-primary fw-bold">¿Olvidaste tu contraseña?</a>
+                                </div>
 
-                                <div class="d-flex align-items-center justify-content-center">                                    
-                                    <a class="text-white btn btn-primary fw-bold ms-2" href="@Url.Action("Registrarse","Login")">Crear una cuenta</a>
+                                <div class="d-flex justify-content-center">
+                                    <a href="@Url.Action("Index","Home")" class="btn btn-outline-primary btn-lg shadow-sm mx-2" style="border-radius: 10px;">Iniciar Sesion</a>
+                                </div>
+
+                                <p class="text-center mb-3 fw-bold">¿No tienes una cuenta?</p>
+                                <div class="d-flex justify-content-center">
+                                    <a href="@Url.Action("Registrarse","Login")" class="btn btn-outline-primary btn-lg shadow-sm mx-2" style="border-radius: 10px;">Crear una cuenta</a>
                                 </div>
                             </form>
                         </div>
@@ -45,3 +43,4 @@
         </div>
     </div>
 </div>
+
