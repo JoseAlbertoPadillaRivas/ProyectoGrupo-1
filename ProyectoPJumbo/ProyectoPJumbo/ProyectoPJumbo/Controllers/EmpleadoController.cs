@@ -18,7 +18,25 @@ namespace ProyectoPJumbo.Controllers
             return View();
         }
 
-      
+
+
+        //Más Adelante ,no tocar//
+        [HttpGet]
+        public IActionResult GenerarFactura()
+        {
+            return View();
+        }
+
+   
+
+
+
+
+
+
+
+
+
     }
 
 }
