@@ -19,6 +19,29 @@ namespace ProyectoPJumbo.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult MostrarEmpleado()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult MostrarEmpleado(Empleado model)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult EditarEmpleado()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult EditarEmpleado(Empleado model)
+        {
+            return View();
+        }
 
         //Más Adelante ,no tocar//
         [HttpGet]
