@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Externo.cshtml";
+}
+
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="row justify-content-center w-100">
+                <div class="col-md-6 col-lg-5 col-xxl-4">
+                    <div class="card border-0 shadow-lg" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-4">
+                                <h2 class="mb-3 text-dark fw-bold">Registrarse</h2>
+                            </div>
+                            <form action="">
+                                <div class="form-group mb-3">
+                                    <label for="Nombre" class="form-label text-dark">Nombre Completo</label>
+                                    <input type="text" class="form-control shadow-sm p-3" id="inputName" placeholder="Ingrese su nombre completo" style="border-radius: 10px;">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="inputEmail" class="form-label text-dark">Correo Electrónico</label>
+                                    <input type="email" class="form-control shadow-sm p-3" id="inputEmail" placeholder="Ingrese su correo" style="border-radius: 10px;">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="password" class="form-label text-dark">Contraseña</label>
+                                    <input type="password" class="form-control shadow-sm p-3" id="password" placeholder="Ingrese su contraseña" style="border-radius: 10px;">
+                                </div>
+
+
+                                <div class="d-flex justify-content-center">
+                                    <a href="@Url.Action("InicioSesion","Login")" class="btn btn-outline-primary btn-lg shadow-sm mx-2" style="border-radius: 10px;">Registrarse</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
