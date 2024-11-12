@@ -1,10 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProyectoPJumbo.Models;
+using static System.Net.WebRequestMethods;
 
 namespace ProyectoPJumbo.Controllers
 {
     public class EmpleadoController : Controller
     {
+        //Inyecciones
+        private readonly IHttpClientFactory _http;
+        private readonly IConfiguration _conf;
+        public EmpleadoController(IHttpClientFactory http, IConfiguration conf)
+        {
+
+
+            _http = http;
+            _conf = conf;
+
+        }
 
         [HttpGet]
         public IActionResult RegistrarEmpleado()
@@ -15,9 +27,26 @@ namespace ProyectoPJumbo.Controllers
         [HttpPost]
         public IActionResult RegistrarEmpleado(Empleado model)
         {
-            return View();
-        }
+            using (var client = _http.CreateClient())
+            {
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Empleado/RegistrarEmpleado";
 
+                JsonContent datos = JsonContent.Create(model);
+
+                var response = client.PostAsync(url, datos).Result; //LLama al Api//
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                if (result != null && result.Codigo == 0)
+                {
+                    return RedirectToAction("Inicio", "Home");
+                }
+                else
+                {
+                    ViewBag.Mensaje = result!.Mensaje;
+                    return View();
+                }
+            }
+        }
 
         [HttpGet]
         public IActionResult MostrarEmpleado()
@@ -31,6 +60,21 @@ namespace ProyectoPJumbo.Controllers
             return View();
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Clase número 9//
         [HttpGet]
         public IActionResult EditarEmpleado()
         {
