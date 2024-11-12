@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProyectoPJumbo.Models;
+using System.Text.Json;
 using static System.Net.WebRequestMethods;
 
 namespace ProyectoPJumbo.Controllers
@@ -51,28 +52,22 @@ namespace ProyectoPJumbo.Controllers
         [HttpGet]
         public IActionResult MostrarEmpleado()
         {
-            return View();
+            using (var client = _http.CreateClient())
+            {
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Empleado/MostrarEmpleado";
+
+                var response = client.GetAsync(url).Result;
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                if (result != null && result.Codigo == 0)
+                {
+                    var datosContenido = JsonSerializer.Deserialize<List<Empleado>>((JsonElement)result.Contenido!);
+                    return View(datosContenido);
+                }
+
+                return View(new List<Empleado>());
+            }
         }
-
-        [HttpPost]
-        public IActionResult MostrarEmpleado(Empleado model)
-        {
-            return View();
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // Clase número 9//
         [HttpGet]

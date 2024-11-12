@@ -8,10 +8,10 @@ namespace ProyectoPJumbo.Models
 
         public long IdEmpleado { get; set; }
         public string Identificacion { get; set; } = string.Empty;
-        public string Contrasena { get; set; } = string.Empty;
-
         public string Nombre { get; set; } = string.Empty;
         public string CorreoEmpleado { get; set; } = string.Empty;
+
+        public string Contrasena { get; set; } = string.Empty;
         public decimal Salario { get; set; }
 
         [ForeignKey("Puesto")]
