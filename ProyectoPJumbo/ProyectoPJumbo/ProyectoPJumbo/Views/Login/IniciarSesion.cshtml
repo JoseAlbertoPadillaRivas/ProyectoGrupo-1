@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Usuario
+
+@{
     Layout = "~/Views/Shared/_Layout_Externo.cshtml";
 }
 
@@ -13,27 +15,26 @@
                             <div class="text-center mb-4">
                                 <h2 class="mb-3 text-dark fw-bold">Iniciar Sesión</h2>
                             </div>
-                            <form action="">
+                            <form asp-action="IniciarSesion" asp-controller="Login">
                                 <div class="form-group mb-3">
                                     <label for="Correo" class="form-label text-dark">Correo Electrónico</label>
-                                    <input type="email" class="form-control shadow-sm p-3" id="inputEmail" placeholder="Ingresar su correo" style="border-radius: 10px;">
+                                    <input type="email" asp-for="Correo" class="form-control shadow-sm p-3" id="inputEmail" placeholder="Ingresar su correo" style="border-radius: 10px;">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="Password" class="form-label text-dark">Contraseña</label>
-                                    <input type="password" class="form-control shadow-sm p-3" id="password" placeholder="Ingrese su Contraseña" style="border-radius: 10px;">
+                                    <input type="password" asp-for="Contrasenna" class="form-control shadow-sm p-3" id="password" placeholder="Ingrese su Contraseña" style="border-radius: 10px;">
                                 </div>
 
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <a href="@Url.Action("RecuperarAcceso","Login")" class="text-primary fw-bold">¿Olvidaste tu contraseña?</a>
                                 </div>
 
-                                <div class="d-flex justify-content-center">
-                                    <a href="@Url.Action("Index","Home")" class="btn btn-outline-primary btn-lg shadow-sm mx-2" style="border-radius: 10px;">Iniciar Sesion</a>
-                                </div>
+                                <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4" value="Procesar">
+
 
                                 <p class="text-center mb-3 fw-bold">¿No tienes una cuenta?</p>
                                 <div class="d-flex justify-content-center">
-                                    <a href="@Url.Action("Registrarse","Login")" class="btn btn-outline-primary btn-lg shadow-sm mx-2" style="border-radius: 10px;">Crear una cuenta</a>
+                                    <a href="@Url.Action("RegistroUsuarios","Login")" class="btn btn-outline-primary btn-lg shadow-sm mx-2" style="border-radius: 10px;">Crear una cuenta</a>
                                 </div>
                             </form>
                         </div>

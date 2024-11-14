@@ -1,0 +1,77 @@
+﻿using Dapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using PJumboAPI.Models;
+
+namespace PJumboAPI.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LoginController : ControllerBase
+    {
+        private readonly IConfiguration _conf;
+
+        public LoginController(IConfiguration conf)
+        {
+            _conf = conf;
+        }
+
+
+
+        [HttpPost]
+        [Route("RegistroUsuarios")]
+        public IActionResult RegistroUsuarios(Usuario model)
+        {
+
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var respuesta = new Respuesta();
+                var result = context.Execute("RegistroUsuarios", new { model.Cedula, model.NombreUsuario, model.Correo, model.Contrasenna });
+
+                if (result > 0)
+                {
+                    respuesta.Codigo = 0;
+                }
+
+                else
+                {
+                    respuesta.Codigo = -1;
+                    respuesta.Mensaje = "Su información no se ha registrado correctamente";
+                }
+
+                return Ok(respuesta);
+            }
+
+        }
+
+        [HttpPost]
+        [Route("IniciarSesion")]
+        public IActionResult IniciarSesion(Usuario model)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var respuesta = new Respuesta();
+                var result = context.QueryFirstOrDefault<Usuario>("IniciarSesion", new { model.Correo, model.Contrasenna });
+
+                if (result != null)
+                {
+                    respuesta.Codigo = 0;
+                    respuesta.Contenido = result;
+
+                }
+                else
+                {
+                    respuesta.Codigo = -1;
+                    respuesta.Mensaje = "Su información no se encontró en nuestro sistema";
+                }
+
+                return Ok(respuesta);
+            }
+        }
+
+
+
+
+    }
+}
