@@ -19,6 +19,9 @@ namespace ProyectoPJumbo.Controllers
             //_comunes = comunes;
         }
 
+
+        //Acciones de los Uusarios de Pizzeria Jumbo//
+
         [HttpGet]
         public IActionResult IniciarSesion()
         {
@@ -89,10 +92,6 @@ namespace ProyectoPJumbo.Controllers
         }
 
 
-
-        // Trabajarlo mañana//
-
-
         [HttpGet]
         public IActionResult MostrarUsuarios()
         {
@@ -100,9 +99,9 @@ namespace ProyectoPJumbo.Controllers
         }
 
 
-
-        //Funcionalidades de Empleado//
-
+      
+        
+        //Acciones del Puesto de Empleado//
         [HttpGet]
         public IActionResult MostrarEmpleado()
         {
@@ -124,7 +123,6 @@ namespace ProyectoPJumbo.Controllers
         }
 
 
-        //Mañana//
         [HttpPut]
         public IActionResult ActualizarEmpleado()
         {

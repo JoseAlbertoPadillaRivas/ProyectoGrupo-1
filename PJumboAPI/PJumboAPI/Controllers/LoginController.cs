@@ -71,6 +71,8 @@ namespace PJumboAPI.Controllers
         }
 
 
+        //LLamado a las acciones de puesto Empleados//
+
         [HttpGet]
         [Route("MostrarEmpleado")]
         public IActionResult MostrarEmpleado()
@@ -97,6 +99,11 @@ namespace PJumboAPI.Controllers
             }
 
         }
+
+
+
+
+
 
     }
 }

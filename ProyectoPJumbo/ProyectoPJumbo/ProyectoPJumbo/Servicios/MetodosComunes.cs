@@ -3,9 +3,8 @@ using System.Text;
 
 namespace ProyectoPJumbo.Servicios
 {
-    public class MetodosComunes
+    public class MetodosComunes : IMetodosComunes
     {
-
         private readonly IConfiguration _conf;
         public MetodosComunes(IConfiguration conf)
         {
@@ -40,5 +39,31 @@ namespace ProyectoPJumbo.Servicios
 
             return Convert.ToBase64String(array);
         }
+
+        public string Decrypt(string texto)
+        {
+            byte[] iv = new byte[16];
+            byte[] buffer = Convert.FromBase64String(texto);
+
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = Encoding.UTF8.GetBytes(_conf.GetSection("Variables:Llave").Value!);
+                aes.IV = iv;
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+
+                using (MemoryStream memoryStream = new MemoryStream(buffer))
+                {
+                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader streamReader = new StreamReader(cryptoStream))
+                        {
+                            return streamReader.ReadToEnd();
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
+
