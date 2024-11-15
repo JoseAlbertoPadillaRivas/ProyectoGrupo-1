@@ -90,8 +90,6 @@ namespace ProyectoPJumbo.Controllers
 
         //Funcionalidades de Empleado//
 
-
-
         [HttpGet]
         public IActionResult MostrarEmpleado()
         {
@@ -112,6 +110,8 @@ namespace ProyectoPJumbo.Controllers
             }
         }
 
+
+        //Mañana//
         [HttpPut]
         public IActionResult ActualizarEmpleado()
         {

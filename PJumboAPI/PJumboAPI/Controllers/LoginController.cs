@@ -71,7 +71,32 @@ namespace PJumboAPI.Controllers
         }
 
 
+        [HttpGet]
+        [Route("MostrarEmpleado")]
+        public IActionResult MostrarEmpleado()
+        {
 
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var respuesta = new Respuesta();
+                var result = context.Query<Empleado>("MostrarEmpleado", new { });
+
+                if (result.Any())
+                {
+                    respuesta.Codigo = 0;
+                    respuesta.Contenido = result;
+                }
+
+                else
+                {
+                    respuesta.Codigo = -1;
+                    respuesta.Mensaje = "Su resgistro de empleado no sé encuentra en nuestro sistema por favor verificar.";
+                }
+
+                return Ok(respuesta);
+            }
+
+        }
 
     }
 }
