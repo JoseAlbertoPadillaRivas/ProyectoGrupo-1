@@ -88,6 +88,19 @@ namespace ProyectoPJumbo.Controllers
             }
         }
 
+
+
+        // Trabajarlo mañana//
+
+
+        [HttpGet]
+        public IActionResult MostrarUsuarios()
+        {
+            return View();
+        }
+
+
+
         //Funcionalidades de Empleado//
 
         [HttpGet]
