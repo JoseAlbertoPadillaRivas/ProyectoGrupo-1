@@ -87,6 +87,47 @@ namespace ProyectoPJumbo.Controllers
                 }
             }
         }
+
+        //Funcionalidades de Empleado//
+
+
+
+        [HttpGet]
+        public IActionResult MostrarEmpleado()
+        {
+            using (var client = _http.CreateClient())
+            {
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Usuario/MostrarEmpleado";
+
+                var response = client.GetAsync(url).Result;
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                if (result != null && result.Codigo == 0)
+                {
+                    var datosContenido = JsonSerializer.Deserialize<List<Empleado>>((JsonElement)result.Contenido!);
+                    return View(datosContenido);
+                }
+
+                return View(new List<Empleado>());
+            }
+        }
+
+        [HttpPut]
+        public IActionResult ActualizarEmpleado()
+        {
+            return View();
+        }
+
+
+        //Mas tarde//
+        [HttpDelete]
+        public IActionResult EliminarEmpleado()
+        {
+            return View();
+        }
+
+
+
     }
 
 }
