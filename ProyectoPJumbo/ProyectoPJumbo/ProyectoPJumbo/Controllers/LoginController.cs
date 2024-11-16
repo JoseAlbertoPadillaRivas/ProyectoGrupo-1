@@ -96,7 +96,7 @@ namespace ProyectoPJumbo.Controllers
 
 
         //Acciones del Empleado//
-        //Revisar y modificar en cualquier caso que lo ocupen chicos//
+        //Revisar y modificar en cualquier caso  lo ocupen chicos//
 
 
         [HttpGet]
@@ -169,17 +169,32 @@ namespace ProyectoPJumbo.Controllers
             }
         }
 
-
-
-
-        //Mas tarde//
-        [HttpDelete]
-        public IActionResult EliminarEmpleado()
+        [HttpPost]
+        public IActionResult EliminarEmpleado(long idEmpleado)
         {
-            return View();
+            using (var client = _http.CreateClient())
+            {
+                // Construir la URL con el parámetro IdEmpleado como parte de la consulta
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Usuario/EliminarEmpleado?IdEmpleado=" + idEmpleado;
+
+                // Enviar la solicitud DELETE sin cuerpo, solo con la URL que contiene el parámetro
+                var response = client.DeleteAsync(url).Result;
+
+                // Leer la respuesta de la API
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                // Verificar si la eliminación fue exitosa
+                if (result != null && result.Codigo == 0)
+                {
+                    return RedirectToAction("Index", "Home"); // Redirigir a la página principal o a donde sea necesario
+                }
+                else
+                {
+                    ViewBag.Mensaje = result?.Mensaje ?? "Ocurrió un error al eliminar al empleado."; // Mensaje de error
+                    return View();  // Mostrar la vista actual con el mensaje
+                }
+            }
         }
-
-
 
     }
 

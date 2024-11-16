@@ -101,8 +101,6 @@ namespace PJumboAPI.Controllers
         }
 
 
-
-
         [HttpPut]
         [Route("ActualizarEmpleado")]
         public IActionResult ActualizarEmpleado(Empleado model)
@@ -126,6 +124,32 @@ namespace PJumboAPI.Controllers
             }
         }
 
+
+        [HttpDelete]
+        [Route("EliminarEmpleado")]
+        public IActionResult EliminarEmpleado(long idEmpleado)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var respuesta = new Respuesta();
+
+                // Ejecutar la consulta DELETE para eliminar al empleado
+                var result = context.Execute("DELETE FROM Empleados WHERE IdEmpleado = @IdEmpleado", new { IdEmpleado = idEmpleado });
+
+                if (result > 0)
+                {
+                    respuesta.Codigo = 0;  // Eliminación exitosa
+                    respuesta.Mensaje = "El empleado ha sido eliminado correctamente.";
+                }
+                else
+                {
+                    respuesta.Codigo = -1;
+                    respuesta.Mensaje = "No se pudo eliminar el empleado. Verifique si el empleado existe.";
+                }
+
+                return Ok(respuesta);  // Retornar la respuesta con el código y mensaje
+            }
+        }
 
     }
 }
