@@ -188,3 +188,98 @@ GO
 
 
 SELECT * FROM Usuarios
+
+
+//Procedimientos Almacenados de Empleado//
+
+
+
+
+
+
+CREATE PROCEDURE [dbo].[MostrarEmpleados]
+	
+AS
+BEGIN
+    SELECT 
+        Emp.ConsecutivoEmpleado,
+        Emp.Identificacion,
+        Emp.Contrasena,
+        Emp.Nombre_Empleado,
+        Emp.Correo_Empleado,
+        Emp.Salario,
+        Emp.ConsecutivoPuesto      
+    FROM 
+        dbo.Empleado Emp
+    INNER JOIN 
+        dbo.Puesto P ON Emp.ConsecutivoPuesto = P.ConsecutivoPuesto;
+END
+
+
+
+CREATE PROCEDURE [dbo].[ActualizarEmpleado]
+    @ConsecutivoEmpleado INT,
+    @Identificacion VARCHAR(50),
+    @Nombre_Empleado VARCHAR(100),
+    @Correo_Empleado VARCHAR(100),
+    @ConsecutivoPuesto INT
+AS
+BEGIN
+    -- Verificar si existe algún registro con la misma Identificacion o Correo
+    -- y que no sea el registro que estamos actualizando
+    IF NOT EXISTS (SELECT 1 
+                   FROM dbo.Empleado
+                   WHERE (Identificacion = @Identificacion OR Correo_Empleado = @Correo_Empleado)
+                     AND ConsecutivoEmpleado != @ConsecutivoEmpleado)
+    BEGIN
+        -- Actualizar el registro
+        UPDATE dbo.Empleado
+        SET Identificacion = @Identificacion,
+            Nombre_Empleado = @Nombre_Empleado,
+            Correo_Empleado = @Correo_Empleado,
+            ConsecutivoPuesto = CASE 
+                                   WHEN @ConsecutivoPuesto != 0 THEN @ConsecutivoPuesto 
+                                   ELSE ConsecutivoPuesto 
+                                END
+        WHERE ConsecutivoEmpleado = @ConsecutivoEmpleado;
+    END
+END
+
+CREATE PROCEDURE EliminarEmpleado
+    @ConsecutivoEmpleado INT
+AS
+BEGIN
+    -- Iniciar transacción para asegurar la integridad de los datos
+    BEGIN TRANSACTION;
+
+    -- Verificar si el empleado existe
+    IF EXISTS (SELECT 1 FROM Empleado WHERE ConsecutivoEmpleado = @ConsecutivoEmpleado)
+    BEGIN
+        -- Eliminar el empleado
+        DELETE FROM Empleado WHERE ConsecutivoEmpleado = @ConsecutivoEmpleado;
+
+        -- Confirmar la eliminación si todo está bien
+        COMMIT TRANSACTION;
+        PRINT 'Empleado eliminado correctamente.';
+    END
+    ELSE
+    BEGIN
+        -- Si no se encuentra el empleado, se hace rollback
+        ROLLBACK TRANSACTION;
+        PRINT 'Empleado no encontrado. No se pudo eliminar.';
+    END
+END;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
