@@ -93,8 +93,8 @@ namespace ProyectoPJumbo.Controllers
         }
 
 
-      
-        
+
+
         //Acciones del Empleado//
         //Revisar y modificar en cualquier caso que lo ocupen chicos//
 
@@ -125,8 +125,8 @@ namespace ProyectoPJumbo.Controllers
             using (var client = _http.CreateClient())
             {
            
-                var consecutivo = HttpContext.Session.GetString("ConsecutivoEmpleado");
-                string url = _conf.GetSection("Variables:RutaApi").Value + "Empleado/MostrarEmpleado?Consecutivo=" + consecutivo;
+                var consecutivo = HttpContext.Session.GetString("IdEmpleado");  //Revisar//
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Usuario/MostrarEmpleado?Consecutivo=" + consecutivo;
                 var response = client.GetAsync(url).Result;
 
                 var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
@@ -138,6 +138,34 @@ namespace ProyectoPJumbo.Controllers
                 }
         
                 return View(new Empleado());
+            }
+        }
+
+
+        [HttpPost]
+        public IActionResult ActualizarEmpleado(Empleado model)
+        {
+            model.IdEmpleado = long.Parse(HttpContext.Session.GetString("IdEmpleado")!);
+
+            using (var client = _http.CreateClient())
+            {
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Usuario/ActualizarEmpleado";
+
+                JsonContent datos = JsonContent.Create(model);
+               
+                var response = client.PutAsync(url, datos).Result;
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                if (result != null && result.Codigo == 0)
+                {
+                    HttpContext.Session.SetString("NombreEmpleado", model.Nombre);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.Mensaje = result!.Mensaje;
+                    return View();
+                }
             }
         }
 
