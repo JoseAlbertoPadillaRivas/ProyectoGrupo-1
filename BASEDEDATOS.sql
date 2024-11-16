@@ -217,7 +217,7 @@ END
 
 
 
-CREATE PROCEDURE [dbo].[ActualizarEmpleado]
+ALTER PROCEDURE [dbo].[ActualizarEmpleado]
     @ConsecutivoEmpleado INT,
     @Identificacion VARCHAR(50),
     @Nombre_Empleado VARCHAR(100),
@@ -245,31 +245,29 @@ BEGIN
     END
 END
 
-CREATE PROCEDURE EliminarEmpleado
+
+ALTER PROCEDURE [dbo].[EliminarEmpleado]
     @ConsecutivoEmpleado INT
 AS
 BEGIN
-    -- Iniciar transacción para asegurar la integridad de los datos
     BEGIN TRANSACTION;
 
-    -- Verificar si el empleado existe
-    IF EXISTS (SELECT 1 FROM Empleado WHERE ConsecutivoEmpleado = @ConsecutivoEmpleado)
+    IF EXISTS (SELECT 1 FROM Usuarios WHERE idUsuario = @ConsecutivoEmpleado)
     BEGIN
-        -- Eliminar el empleado
-        DELETE FROM Empleado WHERE ConsecutivoEmpleado = @ConsecutivoEmpleado;
-
-        -- Confirmar la eliminación si todo está bien
+        DELETE FROM Usuarios WHERE idUsuario = @ConsecutivoEmpleado;
         COMMIT TRANSACTION;
-        PRINT 'Empleado eliminado correctamente.';
+        RETURN 1; -- Eliminación exitosa
     END
     ELSE
     BEGIN
-        -- Si no se encuentra el empleado, se hace rollback
         ROLLBACK TRANSACTION;
-        PRINT 'Empleado no encontrado. No se pudo eliminar.';
+        RETURN 0; -- Empleado no encontrado
     END
-END;
+END; 
 
+SELECT * FROM Usuarios
+
+SELECT * FROM Empleado
 
 
 

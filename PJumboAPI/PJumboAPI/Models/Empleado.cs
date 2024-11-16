@@ -20,5 +20,7 @@ namespace PJumboAPI.Models
 
         public short ConsecutivoRol { get; set; }
         public string NombreRol { get; set; } = string.Empty;
+
+        public int ConsecutivoEmpleado { get; set; }
     }
 }

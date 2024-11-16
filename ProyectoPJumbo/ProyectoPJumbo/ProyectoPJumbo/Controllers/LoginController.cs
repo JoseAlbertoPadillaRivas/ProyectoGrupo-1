@@ -11,8 +11,8 @@ namespace ProyectoPJumbo.Controllers
     {
 
         private readonly IHttpClientFactory _http;
-        private readonly IConfiguration _conf;
-        //private readonly IMetodosComunes _comunes;
+        private readonly IConfiguration _conf; 
+      //private readonly IMetodosComunes _comunes;
         public LoginController(IHttpClientFactory http, IConfiguration conf/*, IMetodosComunes comunes*/)
         {
             _http = http;
@@ -39,7 +39,6 @@ namespace ProyectoPJumbo.Controllers
                 //model.Contrasenna = _comunes.Encrypt(model.Contrasenna);
 
                 JsonContent datos = JsonContent.Create(model);
-
                 var response = client.PostAsync(url, datos).Result;
                 var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
 
@@ -71,7 +70,7 @@ namespace ProyectoPJumbo.Controllers
         {
             using (var client = _http.CreateClient())
             {
-                string url = _conf.GetSection("Variables:RutaApi").Value + "Usuario/RegistroUsuarios";
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Login/RegistroUsuarios";
                 //model.Contrasenna = _comunes.Encrypt(model.Contrasenna);
 
 
@@ -92,9 +91,6 @@ namespace ProyectoPJumbo.Controllers
             }
         }
 
-
-
-
         //Acciones del Empleado//
         //Revisar y modificar en cualquier caso  lo ocupen chicos//
 
@@ -104,7 +100,7 @@ namespace ProyectoPJumbo.Controllers
         {
             using (var client = _http.CreateClient())
             {
-                string url = _conf.GetSection("Variables:RutaApi").Value + "Usuario/MostrarEmpleado";
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Login/MostrarEmpleado";
 
                 var response = client.GetAsync(url).Result;
                 var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
@@ -126,7 +122,7 @@ namespace ProyectoPJumbo.Controllers
             {
            
                 var consecutivo = HttpContext.Session.GetString("IdEmpleado");  //Revisar//
-                string url = _conf.GetSection("Variables:RutaApi").Value + "Usuario/MostrarEmpleado?Consecutivo=" + consecutivo;
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Login/MostrarEmpleado?Consecutivo=" + consecutivo;
                 var response = client.GetAsync(url).Result;
 
                 var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
@@ -149,7 +145,7 @@ namespace ProyectoPJumbo.Controllers
 
             using (var client = _http.CreateClient())
             {
-                string url = _conf.GetSection("Variables:RutaApi").Value + "Usuario/ActualizarEmpleado";
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Login/ActualizarEmpleado";
 
                 JsonContent datos = JsonContent.Create(model);
                
@@ -175,7 +171,7 @@ namespace ProyectoPJumbo.Controllers
             using (var client = _http.CreateClient())
             {
                 // Construir la URL con el parámetro IdEmpleado como parte de la consulta
-                string url = _conf.GetSection("Variables:RutaApi").Value + "Usuario/EliminarEmpleado?IdEmpleado=" + idEmpleado;
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Login/EliminarEmpleado?IdEmpleado=" + idEmpleado;
 
                 // Enviar la solicitud DELETE sin cuerpo, solo con la URL que contiene el parámetro
                 var response = client.DeleteAsync(url).Result;
