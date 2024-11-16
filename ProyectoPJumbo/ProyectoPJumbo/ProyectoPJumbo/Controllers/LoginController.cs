@@ -2,6 +2,7 @@
 using ProyectoPJumbo.Models;
 using System.Text.Json;
 using ProyectoPJumbo.Servicios;
+using System.Net.Http.Headers;
 
 
 namespace ProyectoPJumbo.Controllers
@@ -92,16 +93,12 @@ namespace ProyectoPJumbo.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult MostrarUsuarios()
-        {
-            return View();
-        }
-
-
       
         
-        //Acciones del Puesto de Empleado//
+        //Acciones del Empleado//
+        //Revisar y modificar en cualquier caso que lo ocupen chicos//
+
+
         [HttpGet]
         public IActionResult MostrarEmpleado()
         {
@@ -122,12 +119,29 @@ namespace ProyectoPJumbo.Controllers
             }
         }
 
-
-        [HttpPut]
+        [HttpGet]
         public IActionResult ActualizarEmpleado()
         {
-            return View();
+            using (var client = _http.CreateClient())
+            {
+           
+                var consecutivo = HttpContext.Session.GetString("ConsecutivoEmpleado");
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Empleado/MostrarEmpleado?Consecutivo=" + consecutivo;
+                var response = client.GetAsync(url).Result;
+
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                if (result != null && result.Codigo == 0)
+                {
+                    var datosContenido = JsonSerializer.Deserialize<Empleado>((JsonElement)result.Contenido!);                
+                    return View(datosContenido);
+                }
+        
+                return View(new Empleado());
+            }
         }
+
+
 
 
         //Mas tarde//

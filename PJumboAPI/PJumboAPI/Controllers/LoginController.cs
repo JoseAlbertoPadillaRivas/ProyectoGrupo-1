@@ -103,6 +103,28 @@ namespace PJumboAPI.Controllers
 
 
 
+        [HttpPut]
+        [Route("ActualizarEmpleado")]
+        public IActionResult ActualizarEmpleado(Empleado model)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var respuesta = new Respuesta();
+                var result = context.Execute("ActualizarEmpleado", new { model.Identificacion, model.Nombre, model.CorreoEmpleado, model.ConsecutivoRol });
+
+                if (result > 0)
+                {
+                    respuesta.Codigo = 0;
+                }
+                else
+                {
+                    respuesta.Codigo = -1;
+                    respuesta.Mensaje = "Su información de puesto empleado no se ha actualizado correctamente";
+                }
+
+                return Ok(respuesta);
+            }
+        }
 
 
     }
