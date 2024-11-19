@@ -24,7 +24,7 @@ namespace PJumboAPI.Controllers
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
                 var respuesta = new Respuesta();
-                var result = context.Execute("CrearCuenta", new { plato.Nombre,plato.Precio,plato.RutaImagen });
+                var result = context.Execute("CrearPlato", new { plato.Nombre,plato.Precio,plato.RutaImagen });
 
                 if (result > 0)
                 {

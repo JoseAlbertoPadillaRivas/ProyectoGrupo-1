@@ -2,51 +2,51 @@
 
 <section class="food_section layout_padding">
     <div class="container">
-        <div class="heading_container heading_center">
+        <div class="heading_container heading_center" style="color: #ffffff">
             <h2>
                 Menú
             </h2>
         </div>
-        
-        @foreach (var item in Model)
-        {
-            <div class="filters-content">
-                <div class="row grid">
+
+        <div class="filters-content">
+            <div class="row grid">
+                @foreach (var item in Model)
+                {
                     <div class="col-sm-6 col-lg-4">
                         <div class="box">
                             <div>
                                 <div class="img-box">
-                                    <img src="@item.RutaImagen" alt="">
+                                    <img src="@item.RutaImagen" alt="@item.Nombre">
                                 </div>
                                 <div class="detail-box">
                                     <h5>
                                         @item.Nombre
                                     </h5>
                                     <p>
-                                        @* Chen agrega descripcion *@
-                                        Veniam debitis quaerat officiis quasi cupiditate quo, quisquam velit, magnam voluptatem repellendus sed eaque
+                                        ¡Descubre el placer de cada mordida! Nuestras pizzas están hechas con ingredientes frescos, una base perfectamente crujiente y
+                                        los sabores más auténticos que transportan tus sentidos a la esencia de Italia.
+                                        Ya sea que elijas una clásica de pepperoni o una exquisita pizza italiana, cada porción es un momento de felicidad compartida
+                                        ¡Ven y prueba la magia que conquista corazones y apetitos! 🍕✨
                                     </p>
                                     <div class="options">
                                         <h6>
                                             ¢ @item.Precio
                                         </h6>
-                                        @* Chen arregla el icono *@
                                         <a href="">
-                                            <span> <i class="fa fa-cart-plus"></i> </span>
+                                            <span> <i class="fa fa-cart-plus" style="color: black"></i> </span>
                                         </a>
                                     </div>
-                                   
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
-        
-        }        
+        </div>
+
         <div class="btn-box">
             <a href="">
-                View More
+                Ver Más
             </a>
         </div>
     </div>
