@@ -1,0 +1,53 @@
+﻿@model List<Plato>
+
+<section class="food_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Menú
+            </h2>
+        </div>
+        
+        @foreach (var item in Model)
+        {
+            <div class="filters-content">
+                <div class="row grid">
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="box">
+                            <div>
+                                <div class="img-box">
+                                    <img src="@item.RutaImagen" alt="">
+                                </div>
+                                <div class="detail-box">
+                                    <h5>
+                                        @item.Nombre
+                                    </h5>
+                                    <p>
+                                        @* Chen agrega descripcion *@
+                                        Veniam debitis quaerat officiis quasi cupiditate quo, quisquam velit, magnam voluptatem repellendus sed eaque
+                                    </p>
+                                    <div class="options">
+                                        <h6>
+                                            ¢ @item.Precio
+                                        </h6>
+                                        @* Chen arregla el icono *@
+                                        <a href="">
+                                            <span> <i class="fa fa-cart-plus"></i> </span>
+                                        </a>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        }        
+        <div class="btn-box">
+            <a href="">
+                View More
+            </a>
+        </div>
+    </div>
+</section>

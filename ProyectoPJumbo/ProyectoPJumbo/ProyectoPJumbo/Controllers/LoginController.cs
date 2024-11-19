@@ -48,6 +48,7 @@ namespace ProyectoPJumbo.Controllers
 
                     HttpContext.Session.SetString("ConsecutivoUsuario", datosContenido!.idUsuario.ToString());
                     HttpContext.Session.SetString("NombreUsuario", datosContenido!.NombreUsuario);
+                    HttpContext.Session.SetString("ConsecutivoRol", datosContenido!.ConsecutivoRol.ToString());
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -81,7 +82,7 @@ namespace ProyectoPJumbo.Controllers
 
                 if (result != null && result.Codigo == 0)
                 {
-                    return RedirectToAction("Login", "Login");
+                    return RedirectToAction("IniciarSesion", "Login");
                 }
                 else
                 {

@@ -11,9 +11,9 @@
     <meta name="author" content="" />
     <link rel="shortcut icon" href="images/favicon.png" type="">
 
-    <title> Feane </title>
-    <link href="~/css/bootstrap.css" rel="stylesheet" />   
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+    <title> Pizzeria Jumbo </title>
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/css/responsive.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet" />
 </head>
@@ -25,11 +25,13 @@
             <img src="~/images/pizzeria index.png" />
         </div>
         <!-- header section strats -->
-        <header class="header_section">
+        <header class="header_section bg-dark">
             <div class="container">
-                <nav class="navbar navbar-expand-lg custom_nav-container bg-dark">
+                <nav class="navbar navbar-expand-lg custom_nav-container ">
                     <a class="navbar-brand" href="index.html">
-
+                        <span>
+                            Feane
+                        </span>
                     </a>
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,30 +40,35 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav  mx-auto ">
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index","Home")">Home </a>
+                            </li>
                             <li class="nav-item active">
-                                <a class="nav-link" href="index.html">Inicio <span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="@Url.Action("Menu","Menu")">Menu <span class="sr-only">(current)</span> </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("Pizza","Menu")">Menu</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="about.html">Sobre Nosotros</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="book.html">Reservar</a>
-                            </li>
+
+                            @if (Context.Session.GetString("ConsecutivoRol") != null &&
+                            @Context.Session.GetString("ConsecutivoRol") == "1")
+                            {
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="@Url.Action("Menu","Menu")">Añadir Plato <span class="sr-only">(current)</span> </a>
+                                </li>
+                            }
                         </ul>
                         <div class="user_option">
-                            <a href="@Url.Action("IniciarSesion", "Login")" class="user_link">
+                            <a href="@Url.Action("IniciarSesion","Login")" class="user_link">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                             </a>
-
-                                <form class="form-inline">
+                            <a class="cart_link" href="#">
+                            </a>
+                            <form class="form-inline">
                                 <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
                                     <i class="fa fa-search" aria-hidden="true"></i>
                                 </button>
-                                </form>
-
+                            </form>
+                            <a href="" class="order_online">
+                                Order Online
+                            </a>
                         </div>
                     </div>
                 </nav>
@@ -136,9 +143,10 @@
         </div>
     </footer>
     <!-- jQery -->
-    <script src="js/jquery-3.4.1.min.js"></script>   
+    <script src="~/js/jquery-3.4.1.min.js"></script>
     <!-- bootstrap js -->
-    <script src="js/bootstrap.js"></script>
+    <script src="~/js/bootstrap.js"> </script>   
+    
    
 </body>
 </html>
