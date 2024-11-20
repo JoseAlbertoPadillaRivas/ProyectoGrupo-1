@@ -76,21 +76,25 @@
                         <div class="user_option">
                             @if (Context.Session.GetString("Nombre") != null)
                             {
-                                <a href="@Url.Action("ActualizarPerfil","Usuario")" class="d-flex align-items-center gap-2 dropdown-item">
-                                    <i class="ti ti-user fs-6"></i>
-                                    <p class="mb-0 fs-3">Mi Perfil</p>
+                                <a href="@Url.Action("ActualizarPerfil","Usuario")"
+                                   style="color: white; text-decoration: none;"
+                                   class="d-flex align-items-center gap-2">
+                                    MI PERFIL
                                 </a>
 
-@*                                 <a href="@Url.Action("CambiarContrasenna","Usuario")" class="d-flex align-items-center gap-2 dropdown-item">
+
+                                @* <a href="@Url.Action("CambiarContrasenna","Usuario")" class="d-flex align-items-center gap-2 dropdown-item">
                                     <i class="ti ti-mail fs-6"></i>
                                     <p class="mb-0 fs-3">Seguridad</p>
-                                </a> *@
+                                </a>
 
-@*                                 <a href="@Url.Action("CerrarSesion","Login")" class="btn btn-outline-primary mx-3 mt-2 d-block">Cerrar Sesión</a>
- *@                            }
+                                 <a href="@Url.Action("CerrarSesion","Login")" class="btn btn-outline-primary mx-3 mt-2 d-block">Cerrar Sesión</a> *@
+                            }
                             else
                             {
-                                <a href="@Url.Action("IniciarSesion","Login")" class="btn btn-outline-primary mx-3 mt-2 d-block">Iniciar Sesión</a>
+                                <a href="@Url.Action("IniciarSesion","Login")" class="user_link">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                </a>
                             }
                             </a>
                             <a class="cart_link" href="#">
