@@ -6,7 +6,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddSession();
 
-//builder.Services.AddScoped<IMetodosComunes, MetodosComunes>();
+builder.Services.AddScoped<IMetodosComunes, MetodosComunes>();
 
 var app = builder.Build();
 

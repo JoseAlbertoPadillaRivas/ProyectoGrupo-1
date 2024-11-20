@@ -11,17 +11,16 @@ namespace ProyectoPJumbo.Controllers
     {
 
         private readonly IHttpClientFactory _http;
-        private readonly IConfiguration _conf; 
-      //private readonly IMetodosComunes _comunes;
-        public LoginController(IHttpClientFactory http, IConfiguration conf/*, IMetodosComunes comunes*/)
+        private readonly IConfiguration _conf;
+        private readonly IMetodosComunes _comunes;
+        public LoginController(IHttpClientFactory http, IConfiguration conf, IMetodosComunes comunes)
         {
             _http = http;
             _conf = conf;
-            //_comunes = comunes;
+            _comunes = comunes;
         }
 
 
-        //Acciones de los Uusarios de Pizzeria Jumbo//
 
         [HttpGet]
         public IActionResult IniciarSesion()
@@ -47,7 +46,7 @@ namespace ProyectoPJumbo.Controllers
                     var datosContenido = JsonSerializer.Deserialize<Usuario>((JsonElement)result.Contenido!);
 
                     HttpContext.Session.SetString("ConsecutivoUsuario", datosContenido!.idUsuario.ToString());
-                    HttpContext.Session.SetString("NombreUsuario", datosContenido!.NombreUsuario);
+                    HttpContext.Session.SetString("Nombre", datosContenido!.NombreUsuario);
                     HttpContext.Session.SetString("ConsecutivoRol", datosContenido!.ConsecutivoRol.ToString());
 
                     return RedirectToAction("Index", "Home");

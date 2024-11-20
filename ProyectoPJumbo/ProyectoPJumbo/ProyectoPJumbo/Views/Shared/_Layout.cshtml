@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var nombreUsuario = "Invitado";
+
+    @if (Context.Session.GetString("Nombre") != null)
+    {
+        nombreUsuario = @Context.Session.GetString("Nombre");
+    }
+}
+
+
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -43,7 +53,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav  mx-auto ">
                             <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("Index","Home")">Home </a>
+                                <a class="nav-link" href="@Url.Action("Index","Home")">Inicio </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="@Url.Action("Menu","Menu")">Menu <span class="sr-only">(current)</span> </a>
@@ -55,11 +65,33 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="@Url.Action("CrearPlato","Menu")">Añadir Plato <span class="sr-only">(current)</span> </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("ConsultarUsuarios","Usuario")">Consultar Usuarios<span class="sr-only">(current)</span> </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("MostrarEmpleados","Empleado")">Consultar Empleados<span class="sr-only">(current)</span> </a>
+                                </li>
                             }
                         </ul>
                         <div class="user_option">
-                            <a href="@Url.Action("IniciarSesion","Login")" class="user_link">
-                                <i class="fa fa-user" aria-hidden="true"></i>
+                            @if (Context.Session.GetString("Nombre") != null)
+                            {
+                                <a href="@Url.Action("ActualizarPerfil","Usuario")" class="d-flex align-items-center gap-2 dropdown-item">
+                                    <i class="ti ti-user fs-6"></i>
+                                    <p class="mb-0 fs-3">Mi Perfil</p>
+                                </a>
+
+@*                                 <a href="@Url.Action("CambiarContrasenna","Usuario")" class="d-flex align-items-center gap-2 dropdown-item">
+                                    <i class="ti ti-mail fs-6"></i>
+                                    <p class="mb-0 fs-3">Seguridad</p>
+                                </a> *@
+
+@*                                 <a href="@Url.Action("CerrarSesion","Login")" class="btn btn-outline-primary mx-3 mt-2 d-block">Cerrar Sesión</a>
+ *@                            }
+                            else
+                            {
+                                <a href="@Url.Action("IniciarSesion","Login")" class="btn btn-outline-primary mx-3 mt-2 d-block">Iniciar Sesión</a>
+                            }
                             </a>
                             <a class="cart_link" href="#">
                             </a>

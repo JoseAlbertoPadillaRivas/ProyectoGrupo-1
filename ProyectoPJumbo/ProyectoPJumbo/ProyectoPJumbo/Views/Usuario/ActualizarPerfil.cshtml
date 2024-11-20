@@ -1,0 +1,39 @@
+﻿@model Usuario
+
+<div class="card-body">
+    <h5 class="card-title fw-semibold mb-4">Actualizar Perfil</h5>
+
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="alert alert-secondary text-center">@ViewBag.Mensaje</div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="ActualizarPerfil" asp-controller="Usuario">
+
+                <div class="mb-3">
+                    <label class="form-label">Identificación</label>
+                    <input type="text" asp-for="Cedula" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" asp-for="NombreUsuario" class="form-control" 
+                           style="background-color:#f1f1f1">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Correo Electrónico</label>
+                    <input type="email" asp-for="Correo" class="form-control">
+                </div>
+
+               
+
+                <input type="submit" class="btn btn-primary" value="Procesar">
+
+            </form>
+        </div>
+    </div>
+</div>
+
