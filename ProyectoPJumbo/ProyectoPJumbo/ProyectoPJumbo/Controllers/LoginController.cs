@@ -120,7 +120,7 @@ namespace ProyectoPJumbo.Controllers
         {
             using (var client = _http.CreateClient())
             {
-           
+
                 var consecutivo = HttpContext.Session.GetString("IdEmpleado");  //Revisar//
                 string url = _conf.GetSection("Variables:RutaApi").Value + "Login/MostrarEmpleado?Consecutivo=" + consecutivo;
                 var response = client.GetAsync(url).Result;
@@ -129,10 +129,10 @@ namespace ProyectoPJumbo.Controllers
 
                 if (result != null && result.Codigo == 0)
                 {
-                    var datosContenido = JsonSerializer.Deserialize<Empleado>((JsonElement)result.Contenido!);                
+                    var datosContenido = JsonSerializer.Deserialize<Empleado>((JsonElement)result.Contenido!);
                     return View(datosContenido);
                 }
-        
+
                 return View(new Empleado());
             }
         }
@@ -148,7 +148,7 @@ namespace ProyectoPJumbo.Controllers
                 string url = _conf.GetSection("Variables:RutaApi").Value + "Login/ActualizarEmpleado";
 
                 JsonContent datos = JsonContent.Create(model);
-               
+
                 var response = client.PutAsync(url, datos).Result;
                 var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
 
@@ -190,6 +190,13 @@ namespace ProyectoPJumbo.Controllers
                     return View();  // Mostrar la vista actual con el mensaje
                 }
             }
+        }
+
+        [HttpGet]
+        public IActionResult CerrarSesion()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
     }
