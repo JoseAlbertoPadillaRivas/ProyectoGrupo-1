@@ -5,7 +5,7 @@
         <h5 class="card-title">Mostrar lista de Usuarios</h5>
 
         <div class="table-responsive">
-            <table class="table text-nowrap align-middle mb-0">
+            <table class="table text-nowrap align-middle mb-0" id="tablaUsuarios">
                 <thead>
                     <tr class="border-2 border-bottom border-primary border-0">
 
@@ -23,7 +23,16 @@
                             <td>@item.Cedula</td>
                             <td>@item.NombreUsuario</td>
                             <td>@item.Correo</td>
-                            <td>@item.Estado</td>
+                            <td>
+                                @if (item.Estado)
+                                {
+                                    <span class="badge bg-success">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Inactivo</span>
+                                }
+                            </td>
                             <td>@item.NombreRol</td>
                         </tr>
                     }
@@ -32,3 +41,18 @@
         </div>
     </div>
 </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('#tablaUsuarios').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/2.1.8/i18n/es-ES.json',
+            },
+            columnDefs: [
+                { targets: [0, 1, 2, 3, 4], type: "string" }
+            ]
+        });
+    });
+
+</script>

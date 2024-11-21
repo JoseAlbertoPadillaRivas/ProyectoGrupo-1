@@ -35,7 +35,7 @@ namespace ProyectoPJumbo.Controllers
             {
                 string url = _conf.GetSection("Variables:RutaApi").Value + "Login/IniciarSesion";
 
-                //model.Contrasenna = _comunes.Encrypt(model.Contrasenna);
+                model.Contrasenna = _comunes.Encrypt(model.Contrasenna);
 
                 JsonContent datos = JsonContent.Create(model);
                 var response = client.PostAsync(url, datos).Result;
@@ -71,7 +71,7 @@ namespace ProyectoPJumbo.Controllers
             using (var client = _http.CreateClient())
             {
                 string url = _conf.GetSection("Variables:RutaApi").Value + "Login/RegistroUsuarios";
-                //model.Contrasenna = _comunes.Encrypt(model.Contrasenna);
+                model.Contrasenna = _comunes.Encrypt(model.Contrasenna);
 
 
                 JsonContent datos = JsonContent.Create(model);

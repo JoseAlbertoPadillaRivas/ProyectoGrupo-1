@@ -16,14 +16,18 @@
                                 <h2 class="mb-3 text-primary fw-bold" style="font-family: 'Poppins', sans-serif;">Registrarse</h2>
                                 <p class="text-muted">Crea una cuenta para acceder a todas las funcionalidades</p>
                             </div>
+                            @if (ViewBag.Mensaje != null)
+                            {
+                                <div class="alert alert-secondary text-center">@ViewBag.Mensaje</div>
+                            }
                             <form asp-action="RegistroUsuarios" asp-controller="Login">
                                 <div class="form-group mb-4">
                                     <label for="Cedula" class="form-label text-dark fw-bold">Cédula</label>
-                                    <input type="text" asp-for="Cedula" class="form-control shadow-sm p-3" id="Cedula" placeholder="Ingrese su cédula" style="border-radius: 10px;">
+                                    <input type="text" asp-for="Cedula" class="form-control shadow-sm p-3" id="Cedula" placeholder="Ingrese su cédula" style="border-radius: 10px;" onkeyup="ConsultarNombre();">
                                 </div>
                                 <div class="form-group mb-4">
                                     <label for="NombreUsuario" class="form-label text-dark fw-bold">Nombre Completo</label>
-                                    <input type="text" asp-for="NombreUsuario" class="form-control shadow-sm p-3" id="NombreUsuario" placeholder="Nombre completo" style="border-radius: 10px;">
+                                    <input type="text" asp-for="NombreUsuario" class="form-control shadow-sm p-3" id="NombreUsuario" placeholder="Nombre completo" style="border-radius: 10px;" readonly="readonly">
                                 </div>
                                 <div class="form-group mb-4">
                                     <label for="Correo" class="form-label text-dark fw-bold">Email</label>
@@ -48,3 +52,4 @@
         </div>
     </div>
 </div>
+<script src="~/js/Funciones.js"></script>

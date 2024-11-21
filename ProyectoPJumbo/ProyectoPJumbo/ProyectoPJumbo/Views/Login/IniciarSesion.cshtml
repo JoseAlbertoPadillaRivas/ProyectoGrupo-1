@@ -17,6 +17,10 @@
                                 <h2 class="mb-3 text-dark fw-bold">Iniciar Sesión</h2>
                                 <p class="text-muted">Accede a tu cuenta para continuar</p>
                             </div>
+                            @if (ViewBag.Mensaje != null)
+                            {
+                                <div class="alert alert-secondary text-center">@ViewBag.Mensaje</div>
+                            }
                             <form asp-action="IniciarSesion" asp-controller="Login">
                                 <div class="form-group mb-4">
                                     <label for="Correo" class="form-label text-dark fw-bold">Correo Electrónico</label>
