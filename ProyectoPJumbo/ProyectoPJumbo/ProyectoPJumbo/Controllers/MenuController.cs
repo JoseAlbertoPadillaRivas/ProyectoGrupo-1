@@ -2,6 +2,7 @@
 using ProyectoPJumbo.Models;
 using ProyectoPJumbo.Servicios;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text.Json;
 
 namespace ProyectoPJumbo.Controllers
@@ -11,11 +12,13 @@ namespace ProyectoPJumbo.Controllers
 
         private readonly IHttpClientFactory _http;
         private readonly IConfiguration _conf;
+        private readonly IHostEnvironment _env;
 
-        public MenuController(IHttpClientFactory http, IConfiguration conf)
+        public MenuController(IHttpClientFactory http, IConfiguration conf, IHostEnvironment env)
         {
             _http = http;
-            _conf = conf;           
+            _conf = conf;
+            _env = env;
         }
 
         [HttpGet]
@@ -45,8 +48,25 @@ namespace ProyectoPJumbo.Controllers
         }
 
         [HttpPost]
-        public IActionResult CrearPlato(Plato plato)
+        public IActionResult CrearPlato(IFormFile Imagen,Plato plato)
         {
+            var ext = string.Empty;
+            var folder = string.Empty;
+            plato.RutaImagen = string.Empty;
+
+            if (Imagen != null)
+            {
+                ext = Path.GetExtension(Path.GetFileName(Imagen.FileName));
+                folder = Path.Combine(_env.ContentRootPath, "wwwroot\\Platos");
+                plato.RutaImagen = "/Platos/";
+
+                if (ext.ToLower() != ".png")
+                {
+                    ViewBag.Mensaje = "La imagen debe ser .png";
+                    return View();
+                }
+            }
+
             using (var client = _http.CreateClient())
             {
                 string url = _conf.GetSection("Variables:RutaApi").Value + "Menu/CrearPlato";
@@ -58,6 +78,14 @@ namespace ProyectoPJumbo.Controllers
 
                 if (result != null && result.Codigo == 0)
                 {
+                    if (Imagen != null)
+                    {
+                        string archivo = Path.Combine(folder, result.Mensaje + ext);
+                        using (Stream fs = new FileStream(archivo, FileMode.Create))
+                        {
+                            Imagen.CopyTo(fs);
+                        }
+                    }
                     return RedirectToAction("Menu", "Menu");
                 }
                 else

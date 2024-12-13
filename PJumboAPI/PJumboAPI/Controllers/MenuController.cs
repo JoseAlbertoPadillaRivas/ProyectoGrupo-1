@@ -24,11 +24,13 @@ namespace PJumboAPI.Controllers
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
                 var respuesta = new Respuesta();
-                var result = context.Execute("CrearPlato", new { plato.Nombre,plato.Precio,plato.Descripcion,plato.RutaImagen });
+                var result = context.QueryFirstOrDefault<Plato>("CrearPlato", new { plato.Nombre,plato.Precio,plato.Descripcion,plato.RutaImagen });
 
-                if (result > 0)
+                if (result != null)
                 {
                     respuesta.Codigo = 0;
+                    respuesta.Mensaje = result.ConsecutivoPlato.ToString();
+
                 }
                 else
                 {

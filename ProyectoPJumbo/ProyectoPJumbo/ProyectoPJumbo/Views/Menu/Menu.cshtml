@@ -29,9 +29,21 @@
                                         <h6>
                                             ¢ @item.Precio
                                         </h6>
-                                        <a href="">
-                                            <span> <i class="fa fa-cart-plus" style="color: black"></i> </span>
-                                        </a>
+                                        @if (Context.Session.GetString("ConsecutivoRol") == "3")
+                                        {
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <a onclick="AgregarCarrito(@item.ConsecutivoPlato);"
+                                                       class="btn btn-primary">
+                                                        <i class="fa fa-cart-plus"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            @* <a href="">
+                                                <span> <i class="fa fa-cart-plus" style="color: black"></i> </span>
+                                                </a> *@
+                                        }
                                     </div>
                                 </div>
                             </div>
