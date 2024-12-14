@@ -103,7 +103,7 @@
                             @if (Context.Session.GetString("ConsecutivoRol") == "3")
                             {
                                 <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
-                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                    <a href="@Url.Action("ConsultarCarrito","Carrito")"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
                                 </button>
                             }
                             @if (Context.Session.GetString("Nombre") != null)

@@ -33,16 +33,16 @@
                                         {
                                             <div class="row">
                                                 <div class="col-6">
+                                                    <input id=@item.ConsecutivoPlato type="number" class="form-control text-center" value="1" min="1"
+                                                           onkeypress="return false;">
+                                                </div>
+                                                <div class="col-6">
                                                     <a onclick="AgregarCarrito(@item.ConsecutivoPlato);"
                                                        class="btn btn-primary">
                                                         <i class="fa fa-cart-plus"></i>
                                                     </a>
                                                 </div>
                                             </div>
-
-                                            @* <a href="">
-                                                <span> <i class="fa fa-cart-plus" style="color: black"></i> </span>
-                                                </a> *@
                                         }
                                     </div>
                                 </div>
@@ -60,3 +60,53 @@
         </div>
     </div>
 </section>
+
+<script>
+
+    function AgregarCarrito(ConsecutivoPlato) {
+        let cantidad = $("#" + ConsecutivoPlato).val();
+
+        $.ajax({
+            method: "POST",
+            url: "/Carrito/AgregarCarrito",
+            dataType: "json",
+            data: {
+                "ConsecutivoPlato": ConsecutivoPlato,
+                "Cantidad": cantidad
+            },
+            success: function (data) {
+
+                if (data == 0) {
+                    MostrarMensajeOk("El producto se actualizó correctamente en su carrito");
+                }
+                else {
+                    MostrarMensaje("El producto no fue actualizado en su carrito");
+                }
+
+            }
+        });
+    }
+
+    function MostrarMensajeOk(texto) {
+        Swal.fire({
+            title: "Información",
+            confirmButtonText: "Aceptar",
+            text: texto,
+            icon: "success"
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                window.location.href = "/Menu/Menu";
+            }
+        });
+    }
+
+    function MostrarMensaje(texto) {
+        Swal.fire({
+            title: "Información",
+            text: texto,
+            icon: "info"
+        });
+    }
+
+</script>
