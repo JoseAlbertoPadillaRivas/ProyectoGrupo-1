@@ -26,7 +26,7 @@ namespace ProyectoPJumbo.Controllers
         {
             using (var client = _http.CreateClient())
             {
-                var idUsuario = int.Parse(HttpContext.Session.GetString("idUsuario")!.ToString());
+                var idUsuario = int.Parse(HttpContext.Session.GetString("ConsecutivoUsuario")!.ToString());
 
                 var url = _conf.GetSection("Variables:RutaApi").Value + "Carrito/AgregarCarrito";
 
