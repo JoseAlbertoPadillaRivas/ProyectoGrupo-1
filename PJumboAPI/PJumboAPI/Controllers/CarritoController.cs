@@ -41,12 +41,12 @@ namespace PJumboAPI.Controllers
 
         [HttpGet]
         [Route("ConsultarCarrito")]
-        public IActionResult ConsultarCarrito(int ConsecutivoCarrito)
+        public IActionResult ConsultarCarrito(int idUsuario)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
                 var respuesta = new Respuesta();
-                var result = context.Query<Carrito>("ConsultarCarrito", new { ConsecutivoCarrito });
+                var result = context.Query<Carrito>("ConsultarCarrito", new { idUsuario });
 
                 if (result.Any())
                 {

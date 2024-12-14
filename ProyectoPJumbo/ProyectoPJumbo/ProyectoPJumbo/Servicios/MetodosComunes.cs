@@ -75,23 +75,28 @@ namespace ProyectoPJumbo.Servicios
         {
             using (var client = _http.CreateClient())
             {
-                var idUsuario = int.Parse(_accesor.HttpContext!.Session.GetString("idUsuario")!.ToString());
+                var idUsuario = int.Parse(_accesor.HttpContext!.Session.GetString("ConsecutivoUsuario")!.ToString());
 
-                string url = _conf.GetSection("Variables:RutaApi").Value + "Carrito/ConsultarCarrito?ConsecutivoCarrito=" + idUsuario;
+                // Cambia "ConsecutivoCarrito" por "idUsuario"
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Carrito/ConsultarCarrito?idUsuario=" + idUsuario;
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accesor.HttpContext!.Session.GetString("TokenUsuario"));
                 var response = client.GetAsync(url).Result;
-                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
 
-                if (result != null && result.Codigo == 0)
+                if (response.IsSuccessStatusCode)
                 {
-                    var datosContenido = JsonSerializer.Deserialize<List<Carrito>>((JsonElement)result.Contenido!);
-                    return datosContenido!.ToList();
+                    var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+                    if (result != null && result.Codigo == 0)
+                    {
+                        var datosContenido = JsonSerializer.Deserialize<List<Carrito>>((JsonElement)result.Contenido!);
+                        return datosContenido!.ToList();
+                    }
                 }
 
                 return new List<Carrito>();
             }
         }
+
 
     }
 }
