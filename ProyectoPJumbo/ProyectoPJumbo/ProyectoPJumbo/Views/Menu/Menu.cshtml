@@ -3,9 +3,7 @@
 <section class="food_section layout_padding">
     <div class="container">
         <div class="heading_container heading_center" style="color: #ffffff">
-            <h2>
-                Menú
-            </h2>
+            <h2>Menú</h2>
         </div>
 
         <div class="filters-content">
@@ -19,31 +17,34 @@
                                     <img src="@item.RutaImagen" alt="@item.Nombre">
                                 </div>
                                 <div class="detail-box">
-                                    <h5>
-                                        @item.Nombre
-                                    </h5>
-                                    <p>
-                                        @item.Descripcion
-                                    </p>
+                                    <h5>@item.Nombre</h5>
+                                    <p>@item.Descripcion</p>
                                     <div class="options">
-                                        <h6>
-                                            ¢ @item.Precio
-                                        </h6>
-                                        @if (Context.Session.GetString("ConsecutivoRol") == "3")
-                                        {
-                                            <div class="row">
+                                        <h6>¢ @item.Precio</h6>
+                                        <div class="row">
+                                            @if (Context.Session.GetString("ConsecutivoRol") == "3")
+                                            {
                                                 <div class="col-6">
-                                                    <a onclick="AgregarCarrito(@item.ConsecutivoPlato);"
-                                                       class="btn btn-primary">
+                                                    <a onclick="AgregarCarrito(@item.ConsecutivoPlato);" class="btn btn-primary">
                                                         <i class="fa fa-cart-plus"></i>
                                                     </a>
                                                 </div>
-                                            </div>
+                                            }
 
-                                            @* <a href="">
-                                                <span> <i class="fa fa-cart-plus" style="color: black"></i> </span>
-                                                </a> *@
-                                        }
+                                            @if (Context.Session.GetString("ConsecutivoRol") == "1")
+                                            {
+                                                <div class="col-6">
+                                                    <a href="#" onclick="cargarPlato(@item.ConsecutivoPlato);" class="btn btn-warning" data-toggle="modal" data-target="#actualizarPlatoModal">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6">
+                                                    <button onclick="actualizarEstado(@item.ConsecutivoPlato);" class="btn @(item.Activo ? "btn-danger" : "btn-success")">
+                                                        <i class="fa @(item.Activo ? "fa-toggle-on" : "fa-toggle-off")"></i>
+                                                    </button>
+                                                </div>                                                 
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -54,9 +55,124 @@
         </div>
 
         <div class="btn-box">
-            <a href="">
-                Ver Más
-            </a>
+            <a href="">Ver Más</a>
         </div>
     </div>
 </section>
+
+<!-- Modal para actualizar el plato -->
+<div class="modal fade" id="actualizarPlatoModal" tabindex="-1" role="dialog" aria-labelledby="actualizarPlatoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actualizarPlatoModalLabel">Actualizar Plato</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="actualizarPlatoForm" method="post" enctype="multipart/form-data" asp-action="ActualizarPlato" asp-controller="Menu">
+                <div class="modal-body">
+                    <input type="hidden" id="ConsecutivoPlato" name="ConsecutivoPlato" />
+                    <div class="form-group">
+                        <label for="Nombre">Nombre del Plato</label>
+                        <input type="text" class="form-control" id="Nombre" name="Nombre" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="Descripcion">Descripción</label>
+                        <textarea class="form-control" id="Descripcion" name="Descripcion" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="Precio">Precio</label>
+                        <input type="number" class="form-control" id="Precio" name="Precio" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="ImagenPlato">Imagen</label>
+                        <input type="file" class="form-control-file" id="ImagenPlato" name="ImagenPlato" />
+                        <div class="mt-2">
+                            <img id="RutaImagenPreview" src="" alt="Imagen del Plato" class="img-fluid" style="max-width: 200px; display: none;" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+     // Función para cargar los datos del plato en el modal
+    function cargarPlato(consecutivoPlato) {
+        $.ajax({
+            url: `/Menu/ActualizarPlato?consecutivoPlato=${consecutivoPlato}`,
+            type: 'GET',
+            success: function (data) {
+                if (data) {
+                    $('#ConsecutivoPlato').val(data.consecutivoPlato);
+                    $('#Nombre').val(data.nombre);
+                    $('#Descripcion').val(data.descripcion);
+                    $('#Precio').val(data.precio);
+
+                    // Actualizar la previsualización de la imagen con RutaImagen
+                    if (data.rutaImagen) {
+                        $('#RutaImagenPreview').attr('src', data.rutaImagen).show();
+                    } else {
+                        $('#RutaImagenPreview').hide();
+                    }
+
+                    // Mostrar el modal después de cargar los datos
+                    $('#actualizarPlatoModal').modal('show');
+                } else {
+                    alert("Error al cargar los datos del plato.");
+                }
+            },
+            error: function () {
+                alert("Error en la solicitud al servidor.");
+            }
+        });
+    }
+
+    // Función para enviar el formulario de actualización del plato
+    $('#actualizarPlatoForm').submit(function (e) {
+        e.preventDefault(); // Evita el envío estándar del formulario
+
+        var formData = new FormData(this); // Crear FormData para manejar los datos y el archivo
+
+        $.ajax({
+            url: '/Menu/ActualizarPlato', // URL del controlador web
+            type: 'POST',
+            data: formData,
+            contentType: false, // Necesario para enviar archivos
+            processData: false, // Evita que jQuery procese los datos
+            success: function (response) {
+                // Cierra el modal y muestra un mensaje de éxito
+                $('#actualizarPlatoModal').modal('hide');
+                alert('Plato actualizado correctamente.');
+
+                // Recargar la página para reflejar los cambios
+                location.reload();
+            },
+            error: function () {
+                alert('Error al actualizar el plato.');
+            }
+        });
+    });
+
+    // Función para actualizar el estado del plato
+    function actualizarEstado(consecutivoPlato) {
+        $.ajax({
+            url: '/Menu/ActualizarEstado',
+            type: 'POST',
+            data: { ConsecutivoPlato: consecutivoPlato },
+            success: function () {
+                alert('Estado del plato actualizado correctamente.');
+                location.reload(); // Recargar la página para reflejar los cambios
+            },
+            error: function () {
+                alert('Error al actualizar el estado del plato.');
+            }
+        });
+    }
+</script>
