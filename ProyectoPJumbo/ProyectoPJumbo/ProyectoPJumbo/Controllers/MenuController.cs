@@ -95,5 +95,117 @@ namespace ProyectoPJumbo.Controllers
                 }
             }
         }
-    }
+
+        [HttpGet]
+        public async Task<IActionResult> ActualizarPlato(int consecutivoPlato)
+        {
+            using (var client = _http.CreateClient())
+            {
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Menu/ConsultarPlato?ConsecutivoPlato=" + consecutivoPlato;
+
+                var response = await client.GetAsync(url);
+                var result = await response.Content.ReadFromJsonAsync<Respuesta>();
+
+                 if (result != null && result.Codigo == 0)
+                {
+                    var datosContenido = JsonSerializer.Deserialize<Plato>((JsonElement)result.Contenido!);
+                    return Json(datosContenido); // Devuelve JSON en lugar de una vista
+                }
+
+                return Json(null);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ActualizarPlato(IFormFile Imagen, Plato plato)
+        {
+            var ext = string.Empty;
+            var folder = string.Empty;
+
+            if (Imagen != null)
+            {
+                ext = Path.GetExtension(Path.GetFileName(Imagen.FileName));
+                folder = Path.Combine(_env.ContentRootPath, "wwwroot\\Platos");
+
+                if (ext.ToLower() != ".png")
+                {
+                    ViewBag.Mensaje = "La imagen debe ser .png";
+                    return View();
+                }
+            }
+
+            using (var client = _http.CreateClient())
+            {
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Menu/ActualizarPlato";
+
+                JsonContent datos = JsonContent.Create(plato);
+                
+                var response = client.PutAsync(url, datos).Result;
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                if (result != null && result.Codigo == 0)
+                {
+                    if (Imagen != null)
+                    {
+                        string archivo = Path.Combine(folder, plato.ConsecutivoPlato + ext);
+                        using (Stream fs = new FileStream(archivo, FileMode.Create))
+                        {
+                            Imagen.CopyTo(fs);
+                        }
+                    }
+
+                    return RedirectToAction("Menu", "Menu");
+                }
+                else
+                {
+                    ViewBag.Mensaje = result!.Mensaje;
+                    return View();
+                }
+            }
+        }
+
+
+        [HttpPost]
+        public IActionResult ActualizarEstado(Plato model)
+        {
+            using (var client = _http.CreateClient())
+            {
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Menu/ActualizarEstado";
+
+                JsonContent datos = JsonContent.Create(model);
+                                
+                var response = client.PutAsync(url, datos).Result;
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                if (result != null && result.Codigo == 0)
+                {
+                    return RedirectToAction("Menu", "Menu");
+                }
+                else
+                {
+                    ViewBag.Mensaje = result!.Mensaje;
+                    var datos2 = ObtenerDatosPlatos();
+                    return View("ConsultarPlatos", datos2);
+                }
+            }
+        }
+        private List<Plato> ObtenerDatosPlatos()
+        {
+            using (var client = _http.CreateClient())
+            {
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Menu/MostrarMenu";
+
+                var response = client.GetAsync(url).Result;
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                if (result != null && result.Codigo == 0)
+                {
+                    var datosContenido = JsonSerializer.Deserialize<List<Plato>>((JsonElement)result.Contenido!);
+                    return datosContenido!.ToList();
+                }
+
+                return new List<Plato>();
+            }
+        }
+    }    
 }
