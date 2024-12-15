@@ -21,6 +21,7 @@ namespace ProyectoPJumbo.Controllers
             _comunes = comunes;
         }
 
+        // Agregamos los platos hacia al carrito
         [HttpPost]
         public IActionResult AgregarCarrito(int ConsecutivoPlato, int Cantidad)
         {
@@ -48,12 +49,14 @@ namespace ProyectoPJumbo.Controllers
             }
         }
 
+        // Consultamos los platos que estan dentro del carrito
         [HttpGet]
         public IActionResult ConsultarCarrito()
         {
             return View(_comunes.ConsultarCarritoServicio());
         }
 
+        // Remover platos del carrito
         [HttpPost]
         public IActionResult RemoverPlatoCarrito(Carrito carrito)
         {
@@ -84,7 +87,7 @@ namespace ProyectoPJumbo.Controllers
             }
         }
 
-
+        // Se realiza el Pago del Carrito
         [HttpPost]
         public IActionResult PagarCarrito(Carrito carrito)
         {
@@ -112,6 +115,30 @@ namespace ProyectoPJumbo.Controllers
                     ViewBag.Mensaje = result!.Mensaje;
                     return View("ConsultarCarrito", _comunes.ConsultarCarritoServicio());
                 }
+            }
+        }
+
+        // Se Consulta la Factura
+        [HttpGet]
+        public IActionResult ConsultarFacturas()
+        {
+            using (var client = _http.CreateClient())
+            {
+                var idUsuario = int.Parse(HttpContext.Session.GetString("ConsecutivoUsuario")!.ToString());
+
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Carrito/ConsultarFacturas?idUsuario=" + idUsuario;
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("TokenUsuario"));
+                var response = client.GetAsync(url).Result;
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                if (result != null && result.Codigo == 0)
+                {
+                    var datosContenido = JsonSerializer.Deserialize<List<Carrito>>((JsonElement)result.Contenido!);
+                    return View(datosContenido!.ToList());
+                }
+
+                return View(new List<Carrito>());
             }
         }
     }

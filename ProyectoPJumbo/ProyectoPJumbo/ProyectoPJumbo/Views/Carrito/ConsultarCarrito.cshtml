@@ -48,24 +48,22 @@
         <br />
 
         <div class="row mt-4 align-items-center">
-    <div class="col-4">
-        <p style="font-size:16px; margin-top:2%; font-weight: bold;">El monto a cancelar es de: <b>¢ @decimal.Parse(Context.Session.GetString("Total")!).ToString("N2")</b></p>
-    </div>
-    @if (Context.Session.GetString("Total") != null && Context.Session.GetString("Total") != "0")
-    {
-        <div class="col-8 text-end">
-            <form asp-action="PagarCarrito" asp-controller="Carrito">
-                <button type="submit" class="btn btn-success d-flex align-items-center justify-content-center" style="width:200px">
+            <div class="col-4">
+                <p style="font-size:16px; margin-top:2%; font-weight: bold;">
+                    El monto a cancelar es de: <b>¢ @decimal.Parse(Context.Session.GetString("Total")!).ToString("N2")</b>
+                </p>
+            </div>
+            <div class="col-8 text-end">
+                <!-- Botón corregido para abrir el modal -->
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#PagoModal">
                     <i class="fa fa-credit-card me-2"></i> Pagar
                 </button>
-            </form>
+            </div>
         </div>
-    }
-</div>
-
     </div>
 </div>
 
+@* Modal Remover Plato *@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="max-width:650px; margin: auto;">
@@ -84,7 +82,46 @@
                     <button type="submit" class="btn btn-primary">Procesar</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
 
+@* Modal Pagar Carrito *@
+<div class="modal fade" id="PagoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pagar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="PagarCarrito" asp-controller="Carrito" method="post">
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label>Nombre Completo</label>
+                        <input type="text" class="form-control" name="NombreCompleto" required />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Número de Tarjeta</label>
+                        <input type="text" class="form-control" name="NumeroTarjeta" maxlength="16" required />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Fecha de Expiración</label>
+                        <input type="month" class="form-control" name="FechaExpiracion" required />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>CVC</label>
+                        <input type="text" class="form-control" name="CVC" maxlength="3" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Total a Pagar</label>
+                        <input type="text" class="form-control" value="¢ @decimal.Parse(Context.Session.GetString("Total")!).ToString("N2")" readonly />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-success">Pagar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -102,12 +139,9 @@
         });
     });
 
-    $(document).on("click","#AbrirModal", function(){
-
-          $("#Nombre").text( $(this).attr("data-nombre") );
-          $("#ConsecutivoPlato").val( $(this).attr("data-consecutivoPlato") );
-
-     });
-
+    $(document).on("click", "#AbrirModal", function () {
+        $("#Nombre").text($(this).attr("data-nombre"));
+        $("#ConsecutivoPlato").val($(this).attr("data-consecutivoPlato"));
+    });
 
 </script>

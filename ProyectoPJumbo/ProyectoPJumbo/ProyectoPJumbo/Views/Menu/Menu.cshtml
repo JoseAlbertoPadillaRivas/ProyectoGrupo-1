@@ -20,7 +20,7 @@
                                     <h5>@item.Nombre</h5>
                                     <p>@item.Descripcion</p>
                                     <div class="options">
-                                        <h6 class="price">¢ @item.Precio</h6>
+                                        <h6 class="price">¢ @item.Precio.ToString("N2")</h6>
                                         <div class="row align-items-center">
                                             @if (Context.Session.GetString("ConsecutivoRol") == "3")
                                             {

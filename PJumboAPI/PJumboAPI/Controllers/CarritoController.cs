@@ -108,5 +108,29 @@ namespace PJumboAPI.Controllers
                 return Ok(respuesta);
             }
         }
+
+        [HttpGet]
+        [Route("ConsultarFacturas")]
+        public IActionResult ConsultarFacturas(int idUsuario)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var respuesta = new Respuesta();
+                var result = context.Query<Carrito>("ConsultarFacturas", new { idUsuario });
+
+                if (result.Any())
+                {
+                    respuesta.Codigo = 0;
+                    respuesta.Contenido = result;
+                }
+                else
+                {
+                    respuesta.Codigo = -1;
+                    respuesta.Mensaje = "No hay facturas en este momento";
+                }
+
+                return Ok(respuesta);
+            }
+        }
     }
 }

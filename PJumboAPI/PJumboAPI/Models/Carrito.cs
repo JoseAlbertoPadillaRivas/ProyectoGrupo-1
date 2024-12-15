@@ -11,6 +11,7 @@
         public int Precio { get; set; }
         public string Descripcion { get; set; } = string.Empty;
         public string RutaImagen { get; set; } = string.Empty;
-
+        public string NombreUsuario { get; set; } = string.Empty;
+        public int ConsecutivoFactura { get; set; }
     }
 }

@@ -96,13 +96,6 @@
                                 </a>
                             }
                             </a>
-                            <a class="cart_link" href="#">
-                            </a>
-                            <form class="form-inline">
-                                <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
-                                    <i class="fa fa-search" aria-hidden="true"></i>
-                                </button>
-                            </form>
                             @if (Context.Session.GetString("ConsecutivoRol") == "3")
                             {
                                 <button class="btn my-2 my-sm-0 nav_search-btn" type="submit" style="background: none; border: none;">
@@ -110,7 +103,11 @@
                                         <i class="fa fa-cart-plus" aria-hidden="true" style="color: white;"></i>
                                     </a>
                                 </button>
-
+                                <button class="btn my-2 my-sm-0 nav_search-btn" type="submit" style="background: none; border: none;">
+                                    <a href="@Url.Action("ConsultarFacturas","Carrito")">
+                                        <i class="fa fa-bookmark" aria-hidden="true" style="color: white;"></i>
+                                    </a>
+                                </button>
                             }
                             @if (Context.Session.GetString("Nombre") != null)
                             {
