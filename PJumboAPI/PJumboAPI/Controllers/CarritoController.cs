@@ -32,7 +32,7 @@ namespace PJumboAPI.Controllers
                 else
                 {
                     respuesta.Codigo = -1;
-                    respuesta.Mensaje = "El producto no se ha registrado correctamente en el carrito";
+                    respuesta.Mensaje = "El plato no se ha registrado correctamente en el carrito";
                 }
 
                 return Ok(respuesta);
@@ -56,12 +56,57 @@ namespace PJumboAPI.Controllers
                 else
                 {
                     respuesta.Codigo = -1;
-                    respuesta.Mensaje = "No hay productos en su carrito momento";
+                    respuesta.Mensaje = "No hay platos en su carrito momento";
                 }
 
                 return Ok(respuesta);
             }
         }
 
+        [HttpPost]
+        [Route("RemoverPlatoCarrito")]
+        public IActionResult RemoverPlatoCarrito(Carrito model)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var respuesta = new Respuesta();
+                var result = context.Execute("RemoverPlatoCarrito", new { model.idUsuario, model.ConsecutivoPlato });
+
+                if (result > 0)
+                {
+                    respuesta.Codigo = 0;
+                }
+                else
+                {
+                    respuesta.Codigo = -1;
+                    respuesta.Mensaje = "El plato no se ha removido del carrito";
+                }
+
+                return Ok(respuesta);
+            }
+        }
+
+        [HttpPost]
+        [Route("PagarCarrito")]
+        public IActionResult PagarCarrito(Carrito carrito)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var respuesta = new Respuesta();
+                var result = context.Execute("PagarCarrito", new { carrito.idUsuario });
+
+                if (result > 0)
+                {
+                    respuesta.Codigo = 0;
+                }
+                else
+                {
+                    respuesta.Codigo = -1;
+                    respuesta.Mensaje = "No se realizó el pago de su carrito";
+                }
+
+                return Ok(respuesta);
+            }
+        }
     }
 }

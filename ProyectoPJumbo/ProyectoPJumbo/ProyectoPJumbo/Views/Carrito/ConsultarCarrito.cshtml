@@ -10,7 +10,7 @@
         }
 
         <div class="table-responsive">
-            <table id="example" class="table text-nowrap align-middle mb-0">
+            <table id="example" class="table text-nowrap align-middle mb-0 text-center">
                 <thead>
                     <tr class="border-2 border-bottom border-primary border-0">
                         <th>Imagen</th>
@@ -18,76 +18,77 @@
                         <th>Cantidad</th>
                         <th>Precio</th>
                         <th>Total</th>
+                        <th>Deshacer Plato</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td><img src="@item.RutaImagen" style="width:120px; height:auto;"></td>
+                            <td>
+                                <img src="@item.RutaImagen" style="width:120px; height:auto;">
+                            </td>
                             <td>@item.Nombre</td>
                             <td>@item.Cantidad</td>
                             <td>¢ @item.Precio.ToString("N2")</td>
                             <td>¢ @item.Total.ToString("N2")</td>
-                            @* <td>
+                            <td>
                                 <a id="AbrirModal" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                    data-consecutivoPlato="@item.ConsecutivoPlato" data-nombre="@item.Nombre">
-                                    <i class="fa fa-trash" style="font-size: 1.6em;"></i>
+                                    <i class="fa fa-trash" style="font-size: 1em; color: red;"></i>
                                 </a>
-                            </td> *@
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
 
-
-
         <br />
         <br />
 
-        @* <div class="row">
-            <div class="col-4">
-                <p style="font-size:13pt; margin-top:2%">El monto a cancelar es de: <b>¢ @decimal.Parse(Context.Session.GetString("Total")!).ToString("N2") </b></p>
-            </div>
-            @if (Context.Session.GetString("Total") != null && Context.Session.GetString("Total") != "0")
-            {
-                <div class="col-8">
-                    <form asp-action="PagarCarrito" asp-controller="Carrito">
-                        <button type="submit" class="btn btn-outline-primary" style="width:200px">Pagar</button>
-                    </form>
-                </div>
-            }
-        </div> *@
-
-
+        <div class="row mt-4 align-items-center">
+    <div class="col-4">
+        <p style="font-size:16px; margin-top:2%; font-weight: bold;">El monto a cancelar es de: <b>¢ @decimal.Parse(Context.Session.GetString("Total")!).ToString("N2")</b></p>
+    </div>
+    @if (Context.Session.GetString("Total") != null && Context.Session.GetString("Total") != "0")
+    {
+        <div class="col-8 text-end">
+            <form asp-action="PagarCarrito" asp-controller="Carrito">
+                <button type="submit" class="btn btn-success d-flex align-items-center justify-content-center" style="width:200px">
+                    <i class="fa fa-credit-card me-2"></i> Pagar
+                </button>
+            </form>
+        </div>
+    }
+</div>
 
     </div>
 </div>
 
-@* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" style="width:650px;">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="max-width:650px; margin: auto;">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form asp-action="RemoverProductoCarrito" asp-controller="Carrito">
-                <div class="modal-body">
-                    <input type="hidden" id="ConsecutivoProducto" name="ConsecutivoProducto" value="">
-                    ¿Desea remover el producto <label id="Nombre"></label>?
+            <form asp-action="RemoverPlatoCarrito" asp-controller="Carrito">
+                <div class="modal-body text-center">
+                    <input type="hidden" id="ConsecutivoPlato" name="ConsecutivoPlato" value="">
+                    <p>¿Desea remover el plato: <label id="Nombre"></label>?</p>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-primary">Procesar</button>
                 </div>
             </form>
 
         </div>
     </div>
-</div> *@
+</div>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
 
     $(document).ready(function () {
@@ -96,16 +97,17 @@
                 url: '//cdn.datatables.net/plug-ins/2.1.8/i18n/es-ES.json',
             },
             columnDefs: [
-                { targets: [0, 1, 2, 3], type: "string" }
+                { targets: [0, 1, 2, 3, 4], type: "string" }
             ]
         });
     });
 
-    // $(document).on("click","#AbrirModal", function(){
+    $(document).on("click","#AbrirModal", function(){
 
-    //   $("#Nombre").text( $(this).attr("data-nombre") );
-    //   $("#consecutivoPlato").val( $(this).attr("data-consecutivoPlato") );
+          $("#Nombre").text( $(this).attr("data-nombre") );
+          $("#ConsecutivoPlato").val( $(this).attr("data-consecutivoPlato") );
 
-    // });
+     });
+
 
 </script>

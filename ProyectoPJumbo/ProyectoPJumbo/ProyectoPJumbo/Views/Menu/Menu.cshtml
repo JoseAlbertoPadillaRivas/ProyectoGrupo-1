@@ -104,7 +104,10 @@
         </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 
     function AgregarCarrito(ConsecutivoPlato) {
@@ -121,10 +124,10 @@
             success: function (data) {
 
                 if (data == 0) {
-                    MostrarMensajeOk("El producto se actualizó correctamente en su carrito");
+                    MostrarMensajeOk("El plato se agrego correctamente en su carrito");
                 }
                 else {
-                    MostrarMensaje("El producto no fue actualizado en su carrito");
+                    MostrarMensaje("El plato no se pudo agregar en su carrito");
                 }
 
             }
