@@ -25,21 +25,29 @@ namespace ProyectoPJumbo.Controllers
         public IActionResult Menu()
         {
             using (var client = _http.CreateClient())
-            {               
-                string url = _conf.GetSection("Variables:RutaApi").Value + "Menu/MostrarMenu";
+            {
+                string consecutivoRolString = HttpContext.Session.GetString("ConsecutivoRol") ?? "0";
+                int consecutivoRol = int.Parse(consecutivoRolString);
 
+                // URL del API con el parámetro consecutivoRol
+                string url = $"{_conf.GetSection("Variables:RutaApi").Value}Menu/MostrarMenu?consecutivoRol={consecutivoRol}";
+
+                // Llama al API
                 var response = client.GetAsync(url).Result;
                 var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
 
                 if (result != null && result.Codigo == 0)
                 {
+                    // Convierte el contenido a la lista de platos
                     var datosContenido = JsonSerializer.Deserialize<List<Plato>>((JsonElement)result.Contenido!);
                     return View(datosContenido.ToList());
                 }
 
+                // Si no hay datos, retorna una vista vacía
                 return View(new List<Plato>());
             }
         }
+
 
         [HttpGet]
         public IActionResult CrearPlato()

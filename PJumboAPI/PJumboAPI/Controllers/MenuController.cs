@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using PJumboAPI.Models;
+using System.Data;
 
 namespace PJumboAPI.Controllers
 {
@@ -46,13 +47,20 @@ namespace PJumboAPI.Controllers
 
         [HttpGet]
         [Route("MostrarMenu")]
-        public IActionResult MostrarMenu()
+        public IActionResult MostrarMenu(int consecutivoRol)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
                 var respuesta = new Respuesta();
-                var result = context.Query<Plato>("MostrarMenu", new { });
 
+                // Llama al SP y pasa el parámetro consecutivoRol
+                var result = context.Query<Plato>(
+                    "MostrarMenu",
+                    new { ConsecutivoRol = consecutivoRol },
+                    commandType: CommandType.StoredProcedure
+                );
+
+                // Verifica si hay resultados
                 if (result.Any())
                 {
                     respuesta.Codigo = 0;
@@ -61,14 +69,15 @@ namespace PJumboAPI.Controllers
                 else
                 {
                     respuesta.Codigo = -1;
-                    respuesta.Mensaje = "No hay platos registrados en el sistema";
+                    respuesta.Mensaje = "No hay platos disponibles para este rol.";
                 }
 
                 return Ok(respuesta);
             }
         }
 
-       
+
+
         [HttpGet]
         [Route("ConsultarPlato")]
         public IActionResult ConsultarPlato(int ConsecutivoPlato)
