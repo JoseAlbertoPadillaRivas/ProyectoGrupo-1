@@ -13,7 +13,7 @@
             <table id="example" class="table text-nowrap align-middle mb-0">
                 <thead>
                     <tr class="border-2 border-bottom border-primary border-0">
-                        <th>RutaImagen</th>
+                        <th>Imagen</th>
                         <th>Nombre</th>
                         <th>Cantidad</th>
                         <th>Precio</th>
@@ -24,17 +24,17 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.RutaImagen</td>
-                            <td>@item.ConsecutivoPlato - @item.Nombre</td>
+                            <td><img src="@item.RutaImagen" style="width:120px; height:auto;"></td>
+                            <td>@item.Nombre</td>
                             <td>@item.Cantidad</td>
-                            <td>@item.Precio.ToString("N2")</td>
-                            <td>@item.Total.ToString("N2")</td>
-                            <td>
-                                @* <a id="AbrirModal" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            <td>¢ @item.Precio.ToString("N2")</td>
+                            <td>¢ @item.Total.ToString("N2")</td>
+                            @* <td>
+                                <a id="AbrirModal" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                    data-consecutivoPlato="@item.ConsecutivoPlato" data-nombre="@item.Nombre">
                                     <i class="fa fa-trash" style="font-size: 1.6em;"></i>
-                                </a> *@
-                            </td>
+                                </a>
+                            </td> *@
                         </tr>
                     }
                 </tbody>
@@ -96,7 +96,7 @@
                 url: '//cdn.datatables.net/plug-ins/2.1.8/i18n/es-ES.json',
             },
             columnDefs: [
-                { targets: [0, 1, 2, 3, 4, 5], type: "string" }
+                { targets: [0, 1, 2, 3], type: "string" }
             ]
         });
     });
@@ -104,7 +104,7 @@
     // $(document).on("click","#AbrirModal", function(){
 
     //   $("#Nombre").text( $(this).attr("data-nombre") );
-    //   $("#ConsecutivoPlato").val( $(this).attr("data-consecutivoPlato") );
+    //   $("#consecutivoPlato").val( $(this).attr("data-consecutivoPlato") );
 
     // });
 
