@@ -5,7 +5,7 @@
         <div class="col-md-10">
             <div class="card shadow-lg border-0">
                 <div class="card-header text-center" style="background-color: #f8f9fa; border-bottom: 2px solid #ddd;">
-                    <h4 class="fw-semibold mb-0" style="color: #333;">Actualizar Perfil</h4>
+                    <h4 class="fw-semibold mb-0" style="color: #333;">Datos del Perfil</h4>
                 </div>
                 <div class="card-body p-5">
                     @if (ViewBag.Mensaje != null)
@@ -14,32 +14,31 @@
                     }
 
                     <form asp-action="ActualizarPerfil" asp-controller="Usuario">
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Identificación</label>
-                            <input type="text" asp-for="Cedula" class="form-control"
-                                   placeholder="Ingrese su identificación">
+                        <div class="form-group mb-4">
+                            <label for="Cedula" class="form-label text-dark fw-bold">Cédula</label>
+                            <input type="text" asp-for="Cedula" class="form-control shadow-sm p-3" id="Cedula" placeholder="Ingrese su cédula" style="border-radius: 10px;" onkeyup="ConsultarNombre();">
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Nombre</label>
-                            <input type="text" asp-for="NombreUsuario" class="form-control"
-                                   style="background-color: #f1f1f1;" placeholder="Nombre completo" readonly>
+                        <div class="form-group mb-4">
+                            <label for="NombreUsuario" class="form-label text-dark fw-bold">Nombre Completo</label>
+                            <input type="text" asp-for="NombreUsuario" class="form-control shadow-sm p-3" id="NombreUsuario" placeholder="Nombre completo" style="border-radius: 10px;" readonly="readonly">
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Correo Electrónico</label>
-                            <input type="email" asp-for="Correo" class="form-control"
-                                   placeholder="ejemplo@correo.com">
+                        <div class="form-group mb-4">
+                            <label for="Correo" class="form-label text-dark fw-bold">Email</label>
+                            <input type="email" asp-for="Correo" class="form-control shadow-sm p-3" id="Correo" placeholder="Ingrese su correo" style="border-radius: 10px;">
                         </div>
-
-                        <div class="text-center">
-                            <input type="submit" class="btn btn-dark btn-lg w-100" value="Actualizar Perfil"
-                                   style="background-color: #1976d2; color: #fff; border-radius: 8px; border: none;">
-                        </div>
+                        @if (Context.Session.GetString("ConsecutivoRol") == "3")
+                        {
+                            <div class="text-center">
+                                <input type="submit" class="btn btn-dark btn-lg w-100" value="Actualizar Perfil"
+                                       style="background-color: #1976d2; color: #fff; border-radius: 8px; border: none;">
+                            </div>
+                        }
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<script src="~/js/Funciones.js"></script>

@@ -98,12 +98,5 @@ namespace ProyectoPJumbo.Controllers
             }
         }
 
-        private bool ValidarSiEsAdmin()
-        {
-            return (HttpContext.Session.GetString("ConsecutivoRol") == "1" ? true : false);
-        }
-
-
-
     }
 }

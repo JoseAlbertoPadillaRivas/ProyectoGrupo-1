@@ -8,12 +8,8 @@
         public string Correo { get; set; } = string.Empty;
         public string Contrasenna { get; set; } = string.Empty;
         public double Salario { get; set; }
-        public int ConsecutivoPuesto { get; set; }
         public int ConsecutivoRol { get; set; }
         public string NombreRol { get; set; } = string.Empty;
-
-        public string NombrePuesto { get; set; } = string.Empty;
-
         public string Token { get; set; } = string.Empty;
         public bool Estado { get; set; }
 
