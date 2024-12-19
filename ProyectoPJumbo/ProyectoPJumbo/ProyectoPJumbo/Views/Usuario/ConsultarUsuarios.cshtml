@@ -14,6 +14,7 @@
                         <th>Correo</th>
                         <th>Estado</th>
                         <th>Rol</th>
+                        <th>Cambiar estado</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -34,10 +35,37 @@
                                 }
                             </td>
                             <td>@item.NombreRol</td>
+                            <td>
+                                <a id="AbrirModal" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                   data-id="@item.idUsuario" data-nombre="@item.NombreUsuario">
+                                    <i class="fa fa-trash" style="font-size: 1.6em;"></i>
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:650px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form asp-action="ActualizarEstado" asp-controller="Usuario">
+                <div class="modal-body">
+                    <input type="hidden" id="idUsuario" name="idUsuario" value="">
+                    ¿Desea cambiar el estado del usuario <label id="Nombre"></label>?
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Procesar</button>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>
@@ -53,6 +81,12 @@
                 { targets: [0, 1, 2, 3, 4], type: "string" }
             ]
         });
+    });
+    $(document).on("click", "#AbrirModal", function () {
+
+        $("#Nombre").text($(this).attr("data-nombre"));
+        $("#idUsuario").val($(this).attr("data-id"));
+
     });
 
 </script>

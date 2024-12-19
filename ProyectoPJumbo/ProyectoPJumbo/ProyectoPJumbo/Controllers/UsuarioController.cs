@@ -98,5 +98,54 @@ namespace ProyectoPJumbo.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult ActualizarEstado(Usuario model)
+        {
+            Console.WriteLine("idUsuario recibido: " + model.idUsuario);
+
+            using (var client = _http.CreateClient())
+            {
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Usuario/ActualizarEstado";
+
+                JsonContent datos = JsonContent.Create(model);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("TokenUsuario"));
+                var response = client.PutAsync(url, datos).Result;
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                if (result != null && result.Codigo == 0)
+                {
+                    return RedirectToAction("ConsultarUsuarios", "Usuario");
+                }
+                else
+                {
+                    ViewBag.Mensaje = result!.Mensaje;
+                    var datos2 = ObtenerDatosUsuarios();
+                    return View("ConsultarUsuarios", datos2);
+                }
+            }
+        }
+
+
+        private List<Usuario> ObtenerDatosUsuarios()
+        {
+            using (var client = _http.CreateClient())
+            {
+                var idUsuario = long.Parse(HttpContext.Session.GetString("ConsecutivoUsuario")!);
+                string url = _conf.GetSection("Variables:RutaApi").Value + "Usuario/ConsultarUsuarios";
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("TokenUsuario"));
+                var response = client.GetAsync(url).Result;
+                var result = response.Content.ReadFromJsonAsync<Respuesta>().Result;
+
+                if (result != null && result.Codigo == 0)
+                {
+                    var datosContenido = JsonSerializer.Deserialize<List<Usuario>>((JsonElement)result.Contenido!);
+                    return datosContenido!.Where(x => x.idUsuario != idUsuario).ToList();
+                }
+
+                return new List<Usuario>();
+            }
+        }
+
     }
 }

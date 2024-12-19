@@ -28,7 +28,7 @@
                             <label for="Correo" class="form-label text-dark fw-bold">Email</label>
                             <input type="email" asp-for="Correo" class="form-control shadow-sm p-3" id="Correo" placeholder="Ingrese su correo" style="border-radius: 10px;">
                         </div>
-                        @if (Context.Session.GetString("ConsecutivoRol") == "3")
+                        @if (Context.Session.GetString("ConsecutivoRol") == "2")
                         {
                             <div class="text-center">
                                 <input type="submit" class="btn btn-dark btn-lg w-100" value="Actualizar Perfil"
